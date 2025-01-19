@@ -57,8 +57,12 @@ function deleteEvent(deleteIcon) {
   const eventKey = deleteIcon.getAttribute("data-key");
 
   localStorage.removeItem(eventKey);
-
+  
   loadEvents();
+
+  const eventDeleted = new CustomEvent("eventDeleted");
+
+  document.dispatchEvent(eventDeleted);
 }
 
 document.addEventListener("DOMContentLoaded", loadEvents);
