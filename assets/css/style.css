@@ -42,8 +42,13 @@ h1 {
 #addEventForm {
   display: flex;
   flex-direction: column;
-  gap: 0.625rem;
+  gap: 1.5rem;
   width: 50%;
+}
+
+#addEventForm label {
+  text-align: center;
+  font-weight: bold;
 }
 
 #addEventForm input,
