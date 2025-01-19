@@ -36,7 +36,7 @@ function loadEvents() {
     const timelineListItem = document.createElement("li");
     timelineListItem.innerHTML = `
         <div>
-          <i data-feather="trash-2" class="delete-icon"></i>
+          <i data-feather="trash-2" class="deleteIcon" data-key="${eventData.eventDescription}"></i>
           <time>${formattedDate}</time>
           ${eventData.eventDescription}
         </div>
@@ -45,6 +45,20 @@ function loadEvents() {
     timelineList.appendChild(timelineListItem);
     feather.replace();
   });
+
+  const deleteIcons = document.querySelectorAll(".deleteIcon");
+
+  deleteIcons.forEach((deleteIcon) => {
+    deleteIcon.addEventListener("click", () => deleteEvent(deleteIcon));
+  });
+}
+
+function deleteEvent(deleteIcon) {
+  const eventKey = deleteIcon.getAttribute("data-key");
+
+  localStorage.removeItem(eventKey);
+
+  loadEvents();
 }
 
 document.addEventListener("DOMContentLoaded", loadEvents);
