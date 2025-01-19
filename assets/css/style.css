@@ -13,9 +13,8 @@ a {
 body {
   font: normal 16px/1.5 "Poppins", sans-serif;
   background: #f5f5f5;
-  color: #000;
+  color: #2c445e;
   overflow-x: hidden;
-  padding-bottom: 50px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -25,22 +24,29 @@ body {
 header,
 main {
   padding: 1rem;
+  width: 100%;
 }
 
-header > h1,
-p {
+main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+h1 {
+  font-size: 2.5rem;
   margin: 0;
   text-align: center;
-  color: #2c445e;
 }
 
 #addEventForm {
   display: flex;
   flex-direction: column;
   gap: 0.625rem;
+  width: 50%;
 }
 
-#addEventForm > input,
+#addEventForm input,
 button {
   border: 1px solid #2c445e;
   border-radius: 0.25rem;
@@ -48,14 +54,190 @@ button {
   color: #2c445e;
 }
 
-#addEventForm > button {
+#addEventForm button {
   font-weight: 600;
   background: #fff;
 }
 
-#addEventForm > button:hover {
+#addEventForm button:hover {
   background: #2c445e;
   color: #fff;
   transition: all 0.4s ease-in-out;
   -webkit-transition: all 0.4s ease-in-out;
+}
+
+#addEventForm input:focus,
+#addEventForm button:focus {
+  outline: 2px solid #2c445e;
+  outline-offset: 2px;
+}
+
+/* TIMELINE */
+.emptyTimeline {
+  text-align: center;
+  padding: 2rem;
+
+  margin-top: 2rem;
+}
+
+.emptyTimeline h2 {
+  color: #2c445e;
+  margin-bottom: 1rem;
+}
+
+.emptyTimeline p {
+  color: #2c445e;
+}
+
+.timeline ul {
+  padding: 3.125rem 0;
+}
+
+.timeline ul li {
+  list-style-type: none;
+  position: relative;
+  width: 0.375rem;
+  margin: 0 auto;
+  padding-top: 3.125rem;
+  background: #2c445e;
+}
+
+.timeline ul li::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  transform: translateX(-50%);
+  width: 1.875rem;
+  height: 1.875rem;
+  border-radius: 50%;
+  background: inherit;
+  z-index: 1;
+}
+
+.timeline ul li div {
+  position: relative;
+  bottom: 0;
+  width: 25rem;
+  padding: 0.938rem;
+  background: #fff;
+  border: 1px solid #2c445e;
+  border-radius: 0.25rem;
+}
+
+.timeline ul li div .delete-icon {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  font-size: 24px;
+  color: red;
+  cursor: pointer;
+  z-index: 10;
+}
+
+.timeline ul li div .delete-icon:hover {
+  scale: 1.3;
+  transition: all 0.4s ease-in-out;
+  -webkit-transition: all 0.4s ease-in-out;
+}
+
+.timeline ul li div::before {
+  content: "";
+  position: absolute;
+  bottom: 0.438rem;
+  width: 0;
+  height: 0;
+  border-style: solid;
+}
+
+.timeline ul li:nth-child(odd) div {
+  left: 2.813rem;
+}
+
+.timeline ul li:nth-child(odd) div::before {
+  left: -0.938rem;
+  border-width: 8px 15px 8px 0;
+  border-color: transparent #2c445e transparent transparent;
+}
+
+.timeline ul li:nth-child(even) div {
+  left: -27.438rem;
+}
+
+.timeline ul li:nth-child(even) div::before {
+  right: -0.938rem;
+  border-width: 8px 0 8px 15px;
+  border-color: transparent transparent transparent #2c445e;
+}
+
+time {
+  display: block;
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+
+/* EFFECTS */
+
+.timeline ul li::after {
+  transition: background 0.5s ease-in-out;
+}
+
+.timeline ul li.in-view::after {
+  background: #2c445e;
+}
+
+.timeline ul li div {
+  visibility: hidden;
+  opacity: 0;
+  transition: all 0.5s ease-in-out;
+}
+
+.timeline ul li:nth-child(odd) div {
+  transform: translate3d(200px, 0, 0);
+}
+
+.timeline ul li:nth-child(even) div {
+  transform: translate3d(-200px, 0, 0);
+}
+
+.timeline ul li.in-view div {
+  transform: none;
+  visibility: visible;
+  opacity: 1;
+}
+
+/* GENERAL MEDIA QUERIES */
+
+@media screen and (max-width: 900px) {
+  .timeline ul li div {
+    width: 15.625rem;
+  }
+  .timeline ul li:nth-child(even) div {
+    left: -18.063rem;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  main {
+    align-items: start;
+  }
+
+  main #addEventForm {
+    width: 100%;
+  }
+  .timeline ul li {
+    margin-left: 1.25rem;
+  }
+  .timeline ul li div {
+    width: calc(100vw - 100px);
+  }
+  .timeline ul li:nth-child(even) div {
+    left: 2.813rem;
+  }
+  .timeline ul li:nth-child(even) div::before {
+    left: -0.938rem;
+    border-width: 8px 15px 8px 0;
+    border-color: transparent #2c445e transparent transparent;
+  }
 }

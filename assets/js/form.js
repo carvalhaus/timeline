@@ -18,6 +18,10 @@ addEventForm.addEventListener("submit", function (e) {
   localStorage.setItem(eventDescription, JSON.stringify(event));
 
   addEventForm.reset();
+
+  const eventAdded = new CustomEvent("eventAdded");
+
+  document.dispatchEvent(eventAdded);
 });
 
 function validateForm(event) {
