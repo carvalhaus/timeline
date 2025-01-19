@@ -31,4 +31,10 @@
       callback();
     }, 200);
   });
+
+  document.addEventListener("eventDeleted", function () {
+    setTimeout(() => {
+      callback();
+    }, 200);
+  });
 })();
