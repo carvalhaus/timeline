@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.css"
+      integrity="sha512-oHDEc8Xed4hiW6CxD7qjbnI+B07vDdX7hEPTvn9pSZO1bcRqHp8mj9pyr+8RVC2GmtEfI2Bi9Ke9Ass0as+zpg=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link rel="stylesheet" href="assets/css/style.css" />
+    <title>Timeline de Eventos</title>
+  </head>
+  <body>
+    <header>
+      <h1>Timeline de eventos</h1>
+
+      <p>Preencha sua timeline com eventos! Adicione abaixo.</p>
+    </header>
+
+    <main>
+      <form id="addEventForm">
+        <input type="date" id="eventDate" required />
+        <input
+          type="text"
+          placeholder="Descreva o evento"
+          required
+          id="eventDescription"
+        />
+
+        <button type="submit">Adicionar</button>
+      </form>
+    </main>
+  </body>
+
+  <script type="module" src="assets/js/form.js"></script>
+</html>
