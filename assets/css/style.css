@@ -46,7 +46,7 @@ h1 {
   width: 50%;
 }
 
-#addEventForm label {
+#addEventForm div {
   text-align: center;
   font-weight: bold;
 }
