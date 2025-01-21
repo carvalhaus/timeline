@@ -20,7 +20,10 @@ function loadEvents() {
     const key = localStorage.key(i);
     const eventData = JSON.parse(localStorage.getItem(key));
 
-    events.push(eventData);
+    events.push({
+      key,
+      ...eventData,
+    });
   }
 
   events.sort((a, b) => new Date(a.eventDate) - new Date(b.eventDate));
@@ -35,10 +38,43 @@ function loadEvents() {
 
     const timelineListItem = document.createElement("li");
     timelineListItem.innerHTML = `
-        <div>
-          <i data-feather="trash-2" class="deleteIcon" data-key="${eventData.eventDescription}"></i>
+        <div class="timelineListItem">
+          <button class="moreButton" data-key="${eventData.key}">
+            <i data-feather="more-vertical"></i>
+          </button>
+          <div class="dropdownMenu">
+            <p class="editEvent">Editar</p>
+            <p class="deleteEvent">Deletar</p>
+          </div>
           <time>${formattedDate}</time>
           ${eventData.eventDescription}
+        </div>
+
+        <div id="editModal-${eventData.key}" class="modal">
+          <div class="modalContent">
+            <span class="close">&times;</span>
+            <h2>Editar Evento</h2>
+            <form class="editEventForm">
+              <div>
+                <label for="editEventDate-${eventData.key}">Data do Evento:</label>
+                <input 
+                  type="date" 
+                  id="editEventDate-${eventData.key}" 
+                  value="${eventData.eventDate}" 
+                  required
+                >
+              </div>
+              <div>
+                <label for="editEventDescription-${eventData.key}">Descrição:</label>
+                <input
+                  type="text"
+                  id="editEventDescription-${eventData.key}" 
+                  value="${eventData.eventDescription}" 
+                  required />
+              </div>
+              <button type="submit">Salvar</button>
+            </form>
+          </div>
         </div>
       `;
 
@@ -46,18 +82,98 @@ function loadEvents() {
     feather.replace();
   });
 
-  const deleteIcons = document.querySelectorAll(".deleteIcon");
+  setupDropdowns();
 
-  deleteIcons.forEach((deleteIcon) => {
-    deleteIcon.addEventListener("click", () => deleteEvent(deleteIcon));
+  setupEditModals();
+}
+
+function setupDropdowns() {
+  let currentOpenDropdown = null;
+
+  document.querySelectorAll(".moreButton").forEach((button) => {
+    button.addEventListener("click", (e) => {
+      e.stopPropagation();
+      const dropdown = button.nextElementSibling;
+
+      if (currentOpenDropdown && currentOpenDropdown !== dropdown) {
+        currentOpenDropdown.classList.remove("show");
+      }
+
+      dropdown.classList.toggle("show");
+      currentOpenDropdown = dropdown.classList.contains("show")
+        ? dropdown
+        : null;
+    });
+  });
+
+  document.querySelectorAll(".deleteEvent").forEach((link) => {
+    link.addEventListener("click", (e) => {
+      e.preventDefault();
+      const button = link
+        .closest(".timelineListItem")
+        .querySelector(".moreButton");
+      const eventKey = button.getAttribute("data-key");
+      deleteEvent(eventKey);
+    });
+  });
+
+  document.addEventListener("click", function (event) {
+    if (!event.target.closest(".dropdownMenu") && currentOpenDropdown) {
+      currentOpenDropdown.classList.remove("show");
+      currentOpenDropdown = null;
+    }
   });
 }
 
-function deleteEvent(deleteIcon) {
-  const eventKey = deleteIcon.getAttribute("data-key");
+function setupEditModals() {
+  document.querySelectorAll(".editEvent").forEach((editButton) => {
+    editButton.addEventListener("click", (e) => {
+      const eventKey = e.target
+        .closest(".timelineListItem")
+        .querySelector(".moreButton")
+        .getAttribute("data-key");
 
+      const modal = document.getElementById(`editModal-${eventKey}`);
+      modal.style.display = "flex";
+
+      modal.querySelector(".close").onclick = () => {
+        modal.style.display = "none";
+      };
+
+      window.onclick = (event) => {
+        if (event.target === modal) {
+          modal.style.display = "none";
+        }
+      };
+
+      const form = modal.querySelector(".editEventForm");
+      form.onsubmit = (e) => {
+        e.preventDefault();
+
+        const updatedEventData = {
+          eventDate: document.getElementById(`editEventDate-${eventKey}`).value,
+          eventDescription: document.getElementById(
+            `editEventDescription-${eventKey}`
+          ).value,
+        };
+
+        localStorage.setItem(eventKey, JSON.stringify(updatedEventData));
+
+        modal.style.display = "none";
+
+        loadEvents();
+
+        const eventEdited = new CustomEvent("eventEdited");
+
+        document.dispatchEvent(eventEdited);
+      };
+    });
+  });
+}
+
+function deleteEvent(eventKey) {
   localStorage.removeItem(eventKey);
-  
+
   loadEvents();
 
   const eventDeleted = new CustomEvent("eventDeleted");

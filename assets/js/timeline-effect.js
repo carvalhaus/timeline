@@ -32,6 +32,12 @@
     }, 200);
   });
 
+  document.addEventListener("eventEdited", function () {
+    setTimeout(() => {
+      callback();
+    }, 200);
+  });
+
   document.addEventListener("eventDeleted", function () {
     setTimeout(() => {
       callback();

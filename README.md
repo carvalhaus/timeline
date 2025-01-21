@@ -8,3 +8,9 @@ Criar um pequeno objeto de linha do tempo em HTML5 + Javascript + CSS (ou SASS).
 - [x] A linha do tempo em si, onde serão exibidos todos os eventos cadastrados.
 - [x] O Usuário precisa poder excluir o evento.
 - [ ] Não obrigatório: possibilidade de editar a linha do tempo.(plus)
+
+## resultado
+
+Confira o resultado no link:
+
+https://carvalhaus.github.io/timeline/
