@@ -297,6 +297,7 @@ time {
   border-radius: 0.25rem;
   font-family: inherit;
   text-align: center;
+  width: 100%;
 }
 
 .editEventForm button {
